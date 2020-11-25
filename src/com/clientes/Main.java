@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
+ 
 import com.clases.Clientes;
 import com.clases.Producto;
 
@@ -22,11 +23,7 @@ public class Main {
         
     	Scanner in = new Scanner(System.in);
          
-		 
-		/**
-         * Segun el concepto de polimorfismo un objeto puede tener multiples formas
-         * con la estructura de clase que se entrega por favor implementar el concepto de poliformismo
-         */
+		
     	do {
     		String menu = JOptionPane.showInputDialog("Ingrese opción: \n" 
                     + "         * 1 Agregar cliente\n" 
@@ -89,58 +86,12 @@ public class Main {
 						break;
 					case 2:
 						//
-						
-						String documentoBusqueda = JOptionPane.showInputDialog("Ingrese el documento del cliente que desea Editar");
-						boolean encontrado = false;
-						for(int i = 0; i < vectorCliente.size(); i++) {
-							
-							Clientes auxCliente = vectorCliente.get(i);
-							
-							if (documentoBusqueda.equalsIgnoreCase(auxCliente.getIdentificacion())) {
-								
-								auxCliente.setNombre(JOptionPane.showInputDialog("Nombre del cliente"));
-								auxCliente.setDireccion(JOptionPane.showInputDialog("Dirección del cliente"));
-								auxCliente.setTelefono(JOptionPane.showInputDialog("Telefono del cliente"));
-								auxCliente.setCelular(JOptionPane.showInputDialog("Celular del cliente"));
-								//cliente.setProductos(productos);
-								 
-								vectorCliente.add(i, auxCliente);
-															
-								//rompe el ciclo mas cercano que tenga
-								encontrado = true;
-								break;
-							}
-	
-						}
-	
-						if (encontrado == false) {
-							System.out.println("Cliente NO encontrado");
-						
-						}
+						vectorCliente = EditarCliente(vectorCliente);
 						
 						break;
 					case 3:
 						String documentoBusqueda1 = JOptionPane.showInputDialog("Ingrese el documento del cliente que desea Eliminar");
-						boolean encontrado1 = false;
-						for(int i = 0; i < vectorCliente.size(); i++) {
-							
-							Clientes auxCliente = vectorCliente.get(i);
-							
-							if (documentoBusqueda1.equalsIgnoreCase(auxCliente.getIdentificacion())) {
-								
-								vectorCliente.remove(i);
-								encontrado1 = true;
-								System.out.println("Cliente Eliminado correctamente");
-								break;
-								
-							}
-	
-						}
-						if (encontrado1 == false) {
-							System.out.println("Cliente NO encontrado");
-						
-						}
-						
+						vectorCliente = EliminarCliente(vectorCliente, documentoBusqueda1);
 						break;
 					case 4:
 						
@@ -158,47 +109,8 @@ public class Main {
 					case 5:
 						String tipoDocBusqueda = JOptionPane.showInputDialog("Ingrese el tipo de documento del cliente");
 						String documentoBusqueda2 = JOptionPane.showInputDialog("Ingrese el documento del cliente");
-						boolean encontrado2 = false;
-						for(int i = 0; i < vectorCliente.size(); i++) {
-							
-							Clientes auxCliente = vectorCliente.get(i);
-							
-							if (tipoDocBusqueda.equalsIgnoreCase(auxCliente.getTipoDocumento()) &&
-								documentoBusqueda2.equalsIgnoreCase(auxCliente.getIdentificacion())) {
-								System.out.println("Cliente encontrado # " + i + ":");
-								System.out.println("Tipo Documento: " + auxCliente.getTipoDocumento());
-								System.out.println("Documento: " + auxCliente.getIdentificacion());
-								System.out.println("Nombre: " + auxCliente.getNombre());
-								System.out.println("Dirección: " + auxCliente.getDireccion());
-								System.out.println("Telefono: " + auxCliente.getTelefono());
-								System.out.println("Celular: " + auxCliente.getCelular());
-								try {
-									for(int j = 0; j < auxCliente.getProductos().size(); j++) {
-										
-										Producto auxProductoCliente = auxCliente.getProductos().get(j);
-										
-										System.out.println("Producto " + j + ":");
-										System.out.println("Id del producto: " + auxProductoCliente.getIdProducto());
-										System.out.println("Nombre del Producto: " + auxProductoCliente.getNombre());
-										System.out.println("Condiciones del producto: " + auxProductoCliente.getCondiciones());
-										System.out.println("Caracteristicas del producto: " + auxProductoCliente.getCarateristicas());
-										
-									}
-								}
-								catch (NullPointerException e) {
-									System.out.println("Este cliente no tiene productos asociados");
-								}
-							
-															
-								//rompe el ciclo mas cercano que tenga
-								encontrado2 = true;
-								 
-							}
-	
-						}
-						if (encontrado2 == false) {
-							System.out.println("Cliente NO encontrado");
-						}
+						ConsultarCliente(vectorCliente, tipoDocBusqueda, documentoBusqueda2);
+						
 						
 						break;
 					case 0:
@@ -228,10 +140,112 @@ public class Main {
     	
 
     }
+    
+    public static ArrayList EditarCliente (ArrayList<Clientes> vectorCliente){
+    
 
+		String documentoBusqueda = JOptionPane.showInputDialog("Ingrese el documento del cliente que desea Editar");
+		boolean encontrado = false;
+		for(int i = 0; i < vectorCliente.size(); i++) {
+			
+			Clientes auxCliente = vectorCliente.get(i);
+			
+			if (documentoBusqueda.equalsIgnoreCase(auxCliente.getIdentificacion())) {
+				
+				auxCliente.setNombre(JOptionPane.showInputDialog("Nombre del cliente"));
+				auxCliente.setDireccion(JOptionPane.showInputDialog("Dirección del cliente"));
+				auxCliente.setTelefono(JOptionPane.showInputDialog("Telefono del cliente"));
+				auxCliente.setCelular(JOptionPane.showInputDialog("Celular del cliente"));
+				 
+				 
+				vectorCliente.add(i, auxCliente);
+											
+				
+				encontrado = true;
+				break;
+			}
 	
+		}
+    
 
+		if (encontrado == false) {
+			System.out.println("Cliente NO encontrado");
+		
+		}
+		return vectorCliente;
 
+    }
+    
+    public static ArrayList EliminarCliente(ArrayList<Clientes> vectorCliente, String documentoBusqueda) {
+    	boolean encontrado1 = false;
+		for(int i = 0; i < vectorCliente.size(); i++) {
+			
+			Clientes auxCliente = vectorCliente.get(i);
+			
+			if (documentoBusqueda.equalsIgnoreCase(auxCliente.getIdentificacion())) {
+				
+				vectorCliente.remove(i);
+				encontrado1 = true;
+				System.out.println("Cliente Eliminado correctamente");
+				break;
+				
+			}
+
+		}
+		if (encontrado1 == false) {
+			System.out.println("Cliente NO encontrado");
+		
+		}
+		return vectorCliente;
+		
+    }
+    
+    public static void ConsultarCliente(ArrayList<Clientes> vectorCliente, String tipoDocBusqueda, String documentoBusqueda) {
+    	
+    	boolean encontrado2 = false;
+		for(int i = 0; i < vectorCliente.size(); i++) {
+			
+			Clientes auxCliente = vectorCliente.get(i);
+			
+			if (tipoDocBusqueda.equalsIgnoreCase(auxCliente.getTipoDocumento()) &&
+				documentoBusqueda.equalsIgnoreCase(auxCliente.getIdentificacion())) {
+				System.out.println("Cliente encontrado # " + i + ":");
+				System.out.println("Tipo Documento: " + auxCliente.getTipoDocumento());
+				System.out.println("Documento: " + auxCliente.getIdentificacion());
+				System.out.println("Nombre: " + auxCliente.getNombre());
+				System.out.println("Dirección: " + auxCliente.getDireccion());
+				System.out.println("Telefono: " + auxCliente.getTelefono());
+				System.out.println("Celular: " + auxCliente.getCelular());
+				try {
+					for(int j = 0; j < auxCliente.getProductos().size(); j++) {
+						
+						Producto auxProductoCliente = auxCliente.getProductos().get(j);
+						
+						System.out.println("Producto " + j + ":");
+						System.out.println("Id del producto: " + auxProductoCliente.getIdProducto());
+						System.out.println("Nombre del Producto: " + auxProductoCliente.getNombre());
+						System.out.println("Condiciones del producto: " + auxProductoCliente.getCondiciones());
+						System.out.println("Caracteristicas del producto: " + auxProductoCliente.getCarateristicas());
+						
+					}
+				}
+				catch (NullPointerException e) {
+					System.out.println("Este cliente no tiene productos asociados");
+				}
+			
+											
+				//rompe el ciclo mas cercano que tenga
+				encontrado2 = true;
+				 
+			}
+
+		}
+		if (encontrado2 == false) {
+			System.out.println("Cliente NO encontrado");
+		}
+		
+		
+    }
     
 
 }
